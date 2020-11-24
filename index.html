@@ -13,7 +13,7 @@
         <div id="root">
             <div class="container">
                 <header>
-                    <input v-model="searched" placeholder="cerca un film o una serie tv">
+                    <input v-model="searched" placeholder="cerca un film o una serie tv" @keyup.enter="getSearchResult">
                     <button @click="getSearchResult">Cerca</button>
                 </header>
 
