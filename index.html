@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Boolfix</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
@@ -13,7 +14,7 @@
             <div class="container">
                 <header>
                     <input v-model="searched" placeholder="cerca un film">
-                    <button @click="loaded = false; getSearchResult()">Cerca</button>
+                    <button @click="getSearchResult">Cerca</button>
                 </header>
 
                 <main v-if="loaded">
@@ -31,7 +32,8 @@
                             {{ result.original_language }}
                         </li>
                         <li>
-                            {{ result.vote_average }}
+                            <i class="fas fa-star" v-for="n in toStars(result.vote_average)"></i>
+                            <i class="far fa-star" v-for="n in (5 - toStars(result.vote_average))"></i>
                         </li>
                     </ul>
                 </main>
