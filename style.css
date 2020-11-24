@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1250px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    padding: 50px;
+    background-color: blue;
+    margin-bottom: 50px;
+}
+
+header input {
+    flex-grow: 1;
+}
+
+header button {
+    height: 40px;
+    width: 100px;
+    cursor: pointer;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    list-style-type: none;
+    margin: 0 25px 25px 25px;
+}
+
+.card img {
+    height: 250px;
+    width: 200px;
+    object-fit: cover;
+}
