@@ -17,13 +17,13 @@
                     <button @click="getSearchResult">Cerca</button>
                 </header>
 
-                <main>
-                    <ul class="card" v-for="result in searchResult">
+                <main v-if="loaded.movies && loaded.tvSeries">
+                    <ul class="card" v-for="result in [...searchResult.movies, ...searchResult.tvSeries]">
                         <li class="poster">
                             <img :src="baseUrl + 'w500' + result.poster_path" alt="poster non disponibile">
                         </li>
                         <li>
-                            <span v-if="result.title != undefined">
+                            <span v-if="searchResult.movies.includes(result)">
                                 {{ result.title }}
                             </span>
                             <span v-else>
@@ -31,7 +31,7 @@
                             </span>
                         </li>
                         <li>
-                            <span v-if="result.original_title != undefined">
+                            <span v-if="searchResult.movies.includes(result)">
                                 {{ result.original_title }}
                             </span>
                             <span v-else>
