@@ -12,116 +12,26 @@
         <div id="root">
             <div class="container">
                 <header>
-                    <input placeholder="cerca un film">
-                    <button>Cerca</button>
+                    <input v-model="searched" placeholder="cerca un film">
+                    <button @click="loaded = false; getSearchResult()">Cerca</button>
                 </header>
 
-                <main>
-                    <ul class="card">
+                <main v-if="loaded">
+                    <ul class="card" v-for="result in searchResult">
                         <li>
-                            <img src="https://images.photowall.com/products/51078/movie-poster-jaws.jpg?h=699&q=85" alt="">
+                            <img :src="baseUrl + 'w500' + result.poster_path" alt="poster non disponibile">
                         </li>
                         <li>
-                            titolo
+                            {{ result.title }}
                         </li>
                         <li>
-                            titolo in lingua originale
+                            {{ result.original_title }}
                         </li>
                         <li>
-                            lingua originale
+                            {{ result.original_language }}
                         </li>
                         <li>
-                            voto
-                        </li>
-                    </ul>
-
-                    <ul class="card">
-                        <li>
-                            <img src="https://images.photowall.com/products/51078/movie-poster-jaws.jpg?h=699&q=85" alt="">
-                        </li>
-                        <li>
-                            titolo
-                        </li>
-                        <li>
-                            titolo in lingua originale
-                        </li>
-                        <li>
-                            lingua originale
-                        </li>
-                        <li>
-                            voto
-                        </li>
-                    </ul>
-
-                    <ul class="card">
-                        <li>
-                            <img src="https://images.photowall.com/products/51078/movie-poster-jaws.jpg?h=699&q=85" alt="">
-                        </li>
-                        <li>
-                            titolo
-                        </li>
-                        <li>
-                            titolo in lingua originale
-                        </li>
-                        <li>
-                            lingua originale
-                        </li>
-                        <li>
-                            voto
-                        </li>
-                    </ul>
-
-                    <ul class="card">
-                        <li>
-                            <img src="https://images.photowall.com/products/51078/movie-poster-jaws.jpg?h=699&q=85" alt="">
-                        </li>
-                        <li>
-                            titolo
-                        </li>
-                        <li>
-                            titolo in lingua originale
-                        </li>
-                        <li>
-                            lingua originale
-                        </li>
-                        <li>
-                            voto
-                        </li>
-                    </ul>
-
-                    <ul class="card">
-                        <li>
-                            <img src="https://images.photowall.com/products/51078/movie-poster-jaws.jpg?h=699&q=85" alt="">
-                        </li>
-                        <li>
-                            titolo
-                        </li>
-                        <li>
-                            titolo in lingua originale
-                        </li>
-                        <li>
-                            lingua originale
-                        </li>
-                        <li>
-                            voto
-                        </li>
-                    </ul>
-
-                    <ul class="card">
-                        <li>
-                            <img src="https://images.photowall.com/products/51078/movie-poster-jaws.jpg?h=699&q=85" alt="">
-                        </li>
-                        <li>
-                            titolo
-                        </li>
-                        <li>
-                            titolo in lingua originale
-                        </li>
-                        <li>
-                            lingua originale
-                        </li>
-                        <li>
-                            voto
+                            {{ result.vote_average }}
                         </li>
                     </ul>
                 </main>

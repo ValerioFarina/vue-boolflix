@@ -32,12 +32,19 @@ main {
 }
 
 .card {
+    width: 158px;
     list-style-type: none;
     margin: 0 25px 25px 25px;
 }
 
+.card li:first-child {
+    height: 237px;
+    background-color: black;
+    color: white;
+}
+
 .card img {
-    height: 250px;
-    width: 200px;
+    height: 100%;
+    width: 100%;
     object-fit: cover;
 }
