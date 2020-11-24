@@ -37,7 +37,7 @@ main {
     margin: 0 25px 25px 25px;
 }
 
-.card li:first-child {
+.card .poster {
     height: 237px;
     background-color: black;
     color: white;
@@ -47,4 +47,8 @@ main {
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+
+.card .language img {
+    width: 25px;
 }

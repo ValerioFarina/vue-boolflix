@@ -19,7 +19,7 @@
 
                 <main v-if="loaded">
                     <ul class="card" v-for="result in searchResult">
-                        <li>
+                        <li class="poster">
                             <img :src="baseUrl + 'w500' + result.poster_path" alt="poster non disponibile">
                         </li>
                         <li>
@@ -28,8 +28,8 @@
                         <li>
                             {{ result.original_title }}
                         </li>
-                        <li>
-                            {{ result.original_language }}
+                        <li class="language">
+                            <img :src="'img/flags/' + result.original_language + '.png'" :alt="result.original_language">
                         </li>
                         <li>
                             <i class="fas fa-star" v-for="n in toStars(result.vote_average)"></i>
