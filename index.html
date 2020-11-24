@@ -13,20 +13,30 @@
         <div id="root">
             <div class="container">
                 <header>
-                    <input v-model="searched" placeholder="cerca un film">
+                    <input v-model="searched" placeholder="cerca un film o una serie tv">
                     <button @click="getSearchResult">Cerca</button>
                 </header>
 
-                <main v-if="loaded">
+                <main>
                     <ul class="card" v-for="result in searchResult">
                         <li class="poster">
                             <img :src="baseUrl + 'w500' + result.poster_path" alt="poster non disponibile">
                         </li>
                         <li>
-                            {{ result.title }}
+                            <span v-if="result.title != undefined">
+                                {{ result.title }}
+                            </span>
+                            <span v-else>
+                                {{ result.name }}
+                            </span>
                         </li>
                         <li>
-                            {{ result.original_title }}
+                            <span v-if="result.original_title != undefined">
+                                {{ result.original_title }}
+                            </span>
+                            <span v-else>
+                                {{ result.original_name }}
+                            </span>
                         </li>
                         <li class="language">
                             <img :src="'img/flags/' + result.original_language + '.png'" :alt="result.original_language">

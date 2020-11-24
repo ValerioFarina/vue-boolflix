@@ -4,12 +4,12 @@ var app = new Vue({
     data: {
         searched : '',
         searchResult : [],
-        baseUrl : '',
-        loaded : false
+        baseUrl : ''
     },
 
     methods: {
         getSearchResult() {
+            this.searchResult = [];
             if (this.searched != '') {
                 axios
                     .get('https://api.themoviedb.org/3/search/movie', {
@@ -19,12 +19,21 @@ var app = new Vue({
                         }
                     })
                     .then((responseObject) => {
-                        this.searchResult = responseObject.data.results;
-                        this.loaded = true;
+                        this.searchResult = [...this.searchResult, ...responseObject.data.results];
+                        this.moviesLoaded = true;
                     });
-            } else {
-                this.searchResult = [];
-                this.loaded = false;
+
+                axios
+                    .get('https://api.themoviedb.org/3/search/tv', {
+                        params: {
+                            api_key: '8762c3f242ebc4064f2c46af1dbdebc0',
+                            query: this.searched
+                        }
+                    })
+                    .then((responseObject) => {
+                        this.searchResult = [...this.searchResult, ...responseObject.data.results];
+                        this.tvSeriesLoaded = true;
+                    });
             }
         },
 
