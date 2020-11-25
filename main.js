@@ -1,5 +1,4 @@
-const urlMovie = 'https://api.themoviedb.org/3/search/movie';
-const urlTv = 'https://api.themoviedb.org/3/search/tv';
+const urlSearch = 'https://api.themoviedb.org/3/search/';
 const urlConfig = 'https://api.themoviedb.org/3/configuration';
 const apiKey = '8762c3f242ebc4064f2c46af1dbdebc0';
 
@@ -15,12 +14,14 @@ var app = new Vue({
             movies : {
                 result : [],
                 loaded : false,
-                isLoading : false
+                isLoading : false,
+                url : urlSearch + 'movie'
             },
             tvSeries : {
                 result : [],
                 loaded : false,
-                isLoading: false
+                isLoading: false,
+                url : urlSearch + 'tv'
             }
         },
         imgUrl : {
@@ -30,6 +31,31 @@ var app = new Vue({
     },
 
     methods : {
+        // this function takes as input either the string "movies" or the string "tvSeries"
+        // in the first case, it populates the array search.movies.result with objects representing movies
+        // in the second case, it populates the array search.tvSeries.result with objects representing tv series
+        startSearch(objects) {
+            // we reset the value of loaded
+            this.search[objects].loaded = false;
+            // we set the value of isLoading equal to true
+            this.search[objects].isLoading = true;
+            axios
+                // we get the movies/tv-series that match the search made by the user
+                .get(this.search[objects].url, {
+                    params: {
+                        api_key: apiKey,
+                        query: this.searched.title
+                    }
+                })
+                .then((responseObject) => {
+                    // we add the movies/tv-series to the corresponding array
+                    this.search[objects].result = responseObject.data.results;
+                    // we reset the value of isLoading
+                    this.search[objects].isLoading = false;
+                    // we set the value of loaded equal to true
+                    this.search[objects].loaded = true;
+                });
+        },
         // this function populates the array search.movies.result with objects representing movies
         // and the array search.tvSeries.result with objects representing tv series
         // according to the value of searched.input (which is the text written by the user in the input)
@@ -40,45 +66,10 @@ var app = new Vue({
                 this.searched.title = this.searched.input.trim();
                 // we reset the value of searched.input
                 this.searched.input = '';
-                // we reset the values of search.movies.loaded and search.tvSeries.loaded
-                this.search.movies.loaded = false;
-                this.search.tvSeries.loaded = false;
-                // we set search.movies.isLoading and search.tvSeries.isLoading equal to true
-                this.search.movies.isLoading = true;
-                this.search.tvSeries.isLoading = true;
-                // we get the movies that match the search made by the user
-                axios
-                    .get(urlMovie, {
-                        params: {
-                            api_key: apiKey,
-                            query: this.searched.title
-                        }
-                    })
-                    .then((responseObject) => {
-                        // we add the movies to the array search.movies.result
-                        this.search.movies.result = responseObject.data.results;
-                        // we reset the value of search.movies.isLoading
-                        this.search.movies.isLoading = false;
-                        // we set the value of search.movies.loaded equal to true
-                        this.search.movies.loaded = true;
-                    });
-
-                // we get the tv series that match the search made by the user
-                axios
-                    .get(urlTv, {
-                        params: {
-                            api_key: apiKey,
-                            query: this.searched.title
-                        }
-                    })
-                    .then((responseObject) => {
-                        // we add the tv series to the array search.tvSeries.result
-                        this.search.tvSeries.result = responseObject.data.results;
-                        // we reset the value of search.tvSeries.isLoading
-                        this.search.tvSeries.isLoading = false;
-                        // we set the value of search.tvSeries.loaded equal to true
-                        this.search.tvSeries.loaded = true;
-                    });
+                // we populate the array search.movies.result with objects representing movies according to the search made by the user
+                this.startSearch('movies');
+                // we populate the array search.tvSeries.result with objects representing tv series according to the search made by the user
+                this.startSearch('tvSeries');
             }
         },
         // this function converts a rate based on a 0-to-10 scale into a rate based on a 0-to-5 scale
