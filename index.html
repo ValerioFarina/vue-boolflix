@@ -19,7 +19,7 @@
             <main>
                 <div class="container">
                     <div class="search-result" v-if="isSearchCompleted()">
-                        <h2 v-if="[...search.movies.result, ...search.tvSeries.result].length == 0">
+                        <h2 v-if="search.numberOfResults == 0">
                             Nessun risultato trovato per "{{ searched.title }}"
                         </h2>
                         <h2 v-else>

@@ -22,7 +22,8 @@ var app = new Vue({
                 loaded : false,
                 isLoading: false,
                 url : urlSearch + 'tv'
-            }
+            },
+            numberOfResults : 0
         },
         imgUrl : {
             baseUrl : '',
@@ -47,6 +48,8 @@ var app = new Vue({
             this.search[objects].loaded = false;
             // we set the value of isLoading equal to true
             this.search[objects].isLoading = true;
+            // we reset the value of numberOfResults
+            this.search.numberOfResults = 0;
             axios
                 // we get the movies/tv-series that match the search made by the user
                 .get(this.search[objects].url, {
@@ -58,6 +61,8 @@ var app = new Vue({
                 .then((responseObject) => {
                     // we add the movies/tv-series to the corresponding array
                     this.search[objects].result = responseObject.data.results;
+                    // we add to numberOfResults the number of movies/tv series we have obtained
+                    this.search.numberOfResults += this.search[objects].result.length;
                     // we reset the value of isLoading
                     this.search[objects].isLoading = false;
                     // we set the value of loaded equal to true
