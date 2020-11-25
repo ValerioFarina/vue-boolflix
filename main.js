@@ -100,6 +100,11 @@ var app = new Vue({
         // this function checks whether the search of the movies or the search of the tv series is ongoing
         isSearching() {
             return this.search.movies.isLoading || this.search.tvSeries.isLoading;
+        },
+        // this function takes as input the poster_path of a movie/tv-series object
+        // and returns a complete img-url that unables us to display the poster of this movie/tv-series
+        getImgUrl(posterPath) {
+            return this.imgUrl.baseUrl + this.imgUrl.posterSize + posterPath;
         }
     },
 

@@ -29,7 +29,7 @@
                         <div class="container-cards">
                             <ul class="card" v-for="result in [...search.movies.result, ...search.tvSeries.result]">
                                 <li class="poster">
-                                    <img :src="imgUrl.baseUrl + imgUrl.posterSize + result.poster_path" alt="poster non disponibile" v-if="result.poster_path">
+                                    <img :src="getImgUrl(result.poster_path)" alt="poster non disponibile" v-if="result.poster_path">
                                     <img src="img/poster_not_available.png" v-else>
                                 </li>
                                 <li>
