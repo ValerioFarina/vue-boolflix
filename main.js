@@ -27,7 +27,15 @@ var app = new Vue({
         imgUrl : {
             baseUrl : '',
             posterSize : 'w342'
-        }
+        },
+        languages : [
+            'en',
+            'it',
+            'de',
+            'es',
+            'fr',
+            'ja'
+        ]
     },
 
     methods : {
