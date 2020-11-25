@@ -56,3 +56,7 @@ main h2 {
 .card .language img {
     width: 25px;
 }
+
+[v-cloak] {
+  display: none;
+}

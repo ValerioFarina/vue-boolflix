@@ -11,13 +11,17 @@ var app = new Vue({
             input : '',
             title : ''
         },
-        searchResult : {
-            movies : [],
-            tvSeries : []
-        },
-        loaded : {
-            movies : false,
-            tvSeries : false
+        search : {
+            movies : {
+                result : [],
+                loaded : false,
+                isLoading : false
+            },
+            tvSeries : {
+                result : [],
+                loaded : false,
+                isLoading: false
+            }
         },
         imgUrl : {
             baseUrl : '',
@@ -26,8 +30,8 @@ var app = new Vue({
     },
 
     methods : {
-        // this function populates the array searchResult.movies with objects representing movies
-        // and the array searchResult.tvSeries with objects representing tv series
+        // this function populates the array search.movies.result with objects representing movies
+        // and the array search.tvSeries.result with objects representing tv series
         // according to the value of searched.input (which is the text written by the user in the input)
         getSearchResult() {
             if (this.searched.input.trim() != '') {
@@ -36,9 +40,12 @@ var app = new Vue({
                 this.searched.title = this.searched.input.trim();
                 // we reset the value of searched.input
                 this.searched.input = '';
-                // we reset the values of loaded.movies and loaded.tvSeries
-                this.loaded.movies = false;
-                this.loaded.tvSeries = false;
+                // we reset the values of search.movies.loaded and search.tvSeries.loaded
+                this.search.movies.loaded = false;
+                this.search.tvSeries.loaded = false;
+                // we set search.movies.isLoading and search.tvSeries.isLoading equal to true
+                this.search.movies.isLoading = true;
+                this.search.tvSeries.isLoading = true;
                 // we get the movies that match the search made by the user
                 axios
                     .get(urlMovie, {
@@ -48,10 +55,12 @@ var app = new Vue({
                         }
                     })
                     .then((responseObject) => {
-                        // we add the movies to the array searchResult.movies
-                        this.searchResult.movies = responseObject.data.results;
-                        // we set loaded.movies equal to true
-                        this.loaded.movies = true;
+                        // we add the movies to the array search.movies.result
+                        this.search.movies.result = responseObject.data.results;
+                        // we reset the value of search.movies.isLoading
+                        this.search.movies.isLoading = false;
+                        // we set the value of search.movies.loaded equal to true
+                        this.search.movies.loaded = true;
                     });
 
                 // we get the tv series that match the search made by the user
@@ -63,10 +72,12 @@ var app = new Vue({
                         }
                     })
                     .then((responseObject) => {
-                        // we add the tv series to the array searchResult.tvSeries
-                        this.searchResult.tvSeries = responseObject.data.results;
-                        // we set loaded.tvSeries equal to true
-                        this.loaded.tvSeries = true;
+                        // we add the tv series to the array search.tvSeries.result
+                        this.search.tvSeries.result = responseObject.data.results;
+                        // we reset the value of search.tvSeries.isLoading
+                        this.search.tvSeries.isLoading = false;
+                        // we set the value of search.tvSeries.loaded equal to true
+                        this.search.tvSeries.loaded = true;
                     });
             }
         },

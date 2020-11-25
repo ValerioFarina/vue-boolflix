@@ -10,51 +10,55 @@
     </head>
     <body>
 
-        <div id="root">
+        <div id="root" v-cloak>
             <header>
                 <input v-model="searched.input" placeholder="cerca un film o una serie tv" @keyup.enter="getSearchResult">
                 <button @click="getSearchResult">Cerca</button>
             </header>
 
-            <main v-if="loaded.movies && loaded.tvSeries">
+            <main>
                 <div class="container">
-                    <h2 v-if="[...searchResult.movies, ...searchResult.tvSeries].length == 0">
-                        Nessun risultato trovato per "{{ searched.title }}"
-                    </h2>
+                    <div class="search-result" v-if="search.movies.loaded && search.tvSeries.loaded">
+                        <h2 v-if="[...search.movies.result, ...search.tvSeries.result].length == 0">
+                            Nessun risultato trovato per "{{ searched.title }}"
+                        </h2>
+                        <h2 v-else>
+                            Risultati trovati per "{{ searched.title }}"
+                        </h2>
 
-                    <h2 v-else>
-                        Risultati trovati per "{{ searched.title }}"
-                    </h2>
-
-                    <div class="container-cards">
-                        <ul class="card" v-for="result in [...searchResult.movies, ...searchResult.tvSeries]">
-                            <li class="poster">
-                                <img :src="imgUrl.baseUrl + imgUrl.posterSize + result.poster_path" alt="poster non disponibile">
-                            </li>
-                            <li>
-                                <span v-if="searchResult.movies.includes(result)">
-                                    {{ result.title }}
-                                </span>
-                                <span v-else>
-                                    {{ result.name }}
-                                </span>
-                            </li>
-                            <li>
-                                <span v-if="searchResult.movies.includes(result)">
-                                    {{ result.original_title }}
-                                </span>
-                                <span v-else>
-                                    {{ result.original_name }}
-                                </span>
-                            </li>
-                            <li class="language">
-                                <img :src="'img/flags/' + result.original_language + '.png'" :alt="result.original_language">
-                            </li>
-                            <li>
-                                <i class="fas fa-star" v-for="n in toStars(result.vote_average)"></i>
-                                <i class="far fa-star" v-for="n in (5 - toStars(result.vote_average))"></i>
-                            </li>
-                        </ul>
+                        <div class="container-cards">
+                            <ul class="card" v-for="result in [...search.movies.result, ...search.tvSeries.result]">
+                                <li class="poster">
+                                    <img :src="imgUrl.baseUrl + imgUrl.posterSize + result.poster_path" alt="poster non disponibile">
+                                </li>
+                                <li>
+                                    <span v-if="search.movies.result.includes(result)">
+                                        {{ result.title }}
+                                    </span>
+                                    <span v-else>
+                                        {{ result.name }}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span v-if="search.tvSeries.result.includes(result)">
+                                        {{ result.original_title }}
+                                    </span>
+                                    <span v-else>
+                                        {{ result.original_name }}
+                                    </span>
+                                </li>
+                                <li class="language">
+                                    <img :src="'img/flags/' + result.original_language + '.png'" :alt="result.original_language">
+                                </li>
+                                <li>
+                                    <i class="fas fa-star" v-for="n in toStars(result.vote_average)"></i>
+                                    <i class="far fa-star" v-for="n in (5 - toStars(result.vote_average))"></i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="loading" v-else-if="search.movies.isLoading || search.tvSeries.isLoading">
+                        <h2>Ricerca in corso ...</h2>
                     </div>
                 </div>
             </main>
