@@ -87,6 +87,14 @@ var app = new Vue({
         // this function converts a rate based on a 0-to-10 scale into a rate based on a 0-to-5 scale
         toStars(vote) {
             return Math.round(vote / 2);
+        },
+        // this function checks if both the search of the movies and the search of the tv series is completed
+        isSearchCompleted() {
+            return this.search.movies.loaded && this.search.tvSeries.loaded;
+        },
+        // this function checks whether the search of the movies or the search of the tv series is ongoing
+        isSearching() {
+            return this.search.movies.isLoading || this.search.tvSeries.isLoading;
         }
     },
 
