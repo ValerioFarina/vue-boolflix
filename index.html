@@ -11,13 +11,13 @@
     <body>
 
         <div id="root">
-            <div class="container">
-                <header>
-                    <input v-model="searched.input" placeholder="cerca un film o una serie tv" @keyup.enter="getSearchResult">
-                    <button @click="getSearchResult">Cerca</button>
-                </header>
+            <header>
+                <input v-model="searched.input" placeholder="cerca un film o una serie tv" @keyup.enter="getSearchResult">
+                <button @click="getSearchResult">Cerca</button>
+            </header>
 
-                <main v-if="loaded.movies && loaded.tvSeries">
+            <main v-if="loaded.movies && loaded.tvSeries">
+                <div class="container">
                     <h2 v-if="[...searchResult.movies, ...searchResult.tvSeries].length == 0">
                         Nessun risultato trovato per "{{ searched.title }}"
                     </h2>
@@ -29,7 +29,7 @@
                     <div class="container-cards">
                         <ul class="card" v-for="result in [...searchResult.movies, ...searchResult.tvSeries]">
                             <li class="poster">
-                                <img :src="baseUrl + 'w500' + result.poster_path" alt="poster non disponibile">
+                                <img :src="imgUrl.baseUrl + imgUrl.posterSize + result.poster_path" alt="poster non disponibile">
                             </li>
                             <li>
                                 <span v-if="searchResult.movies.includes(result)">
@@ -56,8 +56,8 @@
                             </li>
                         </ul>
                     </div>
-                </main>
-            </div>
+                </div>
+            </main>
         </div>
 
 
