@@ -72,6 +72,10 @@ var app = new Vue({
                 this.startSearch('tvSeries');
             }
         },
+        // this function checks if an object represents a movie or a tv series
+        isMovie(object) {
+            return this.search.movies.result.includes(object);
+        },
         // this function converts a rate based on a 0-to-10 scale into a rate based on a 0-to-5 scale
         toStars(vote) {
             return Math.round(vote / 2);

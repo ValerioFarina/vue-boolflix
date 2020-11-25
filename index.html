@@ -32,7 +32,7 @@
                                     <img :src="imgUrl.baseUrl + imgUrl.posterSize + result.poster_path" alt="poster non disponibile">
                                 </li>
                                 <li>
-                                    <span v-if="search.movies.result.includes(result)">
+                                    <span v-if="isMovie(result)">
                                         {{ result.title }}
                                     </span>
                                     <span v-else>
@@ -40,7 +40,7 @@
                                     </span>
                                 </li>
                                 <li>
-                                    <span v-if="search.tvSeries.result.includes(result)">
+                                    <span v-if="isMovie(result)">
                                         {{ result.original_title }}
                                     </span>
                                     <span v-else>
