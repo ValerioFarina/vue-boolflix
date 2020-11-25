@@ -22,7 +22,7 @@ var app = new Vue({
             // we reset the values of loaded.movies and loaded.tvSeries
             this.loaded.movies = false;
             this.loaded.tvSeries = false;
-            if (this.searched != '') {
+            if (this.searched.trim() != '') {
                 // if the input inserted by the user is not an empty string, we make the API calls we need
                 // we get the movies that match the search made by the user
                 axios

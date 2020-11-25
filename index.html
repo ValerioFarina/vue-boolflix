@@ -18,6 +18,8 @@
                 </header>
 
                 <main v-if="loaded.movies && loaded.tvSeries">
+                    <h2 v-if="searchResult.movies.length == 0 && searchResult.tvSeries.length == 0">Nessun risultato trovato</h2>
+
                     <ul class="card" v-for="result in [...searchResult.movies, ...searchResult.tvSeries]">
                         <li class="poster">
                             <img :src="baseUrl + 'w500' + result.poster_path" alt="poster non disponibile">
