@@ -43,8 +43,7 @@ main h2 {
 
 .card .poster {
     height: 237px;
-    background-color: black;
-    color: white;
+    background-color: grey;
 }
 
 .card img {
