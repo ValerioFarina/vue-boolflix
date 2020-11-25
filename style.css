@@ -26,7 +26,11 @@ header button {
     cursor: pointer;
 }
 
-main {
+main h2 {
+    margin-bottom: 40px;
+}
+
+.container-cards {
     display: flex;
     flex-wrap: wrap;
 }
