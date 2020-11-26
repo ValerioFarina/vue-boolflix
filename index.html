@@ -41,18 +41,22 @@
                                     <img src="img/poster_not_available.png" v-else>
                                 </li>
                                 <li class="title">
+                                    <strong>Titolo: </strong>
                                     {{ isMovie(result) ? result.title : result.name }}
                                 </li>
                                 <li class="original-title">
+                                    <strong>Titolo originale: </strong>
                                     {{ isMovie(result) ? result.original_title : result.original_name }}
                                 </li>
                                 <li class="language">
+                                    <strong>Lingua originale: </strong>
                                     <img :src="getFlag(result.original_language)" v-if="flagsAvailable.includes(result.original_language)">
                                     <span v-else>
                                         {{ result.original_language }}
                                     </span>
                                 </li>
                                 <li class="vote">
+                                    <strong>Voto: </strong>
                                     <i class="fas fa-star" v-for="n in solidStars(result.vote_average)"></i>
                                     <i class="far fa-star" v-for="n in regularStars(result.vote_average)"></i>
                                 </li>
