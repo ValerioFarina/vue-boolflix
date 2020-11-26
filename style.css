@@ -11,19 +11,39 @@
 
 header {
     display: flex;
-    padding: 50px;
-    background-color: blue;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 30px;
+    background-color: black;
     margin-bottom: 50px;
 }
 
-header input {
-    flex-grow: 1;
+header .logo {
+    display: flex;
+    align-items: center;
+    color: red;
+    font-size: 30px;
+}
+
+header .search {
+    display: flex;
+    align-items: center;
 }
 
 header button {
-    height: 40px;
-    width: 100px;
+    height: 35px;
+    width: 70px;
+    border-radius: 5px;
     cursor: pointer;
+    outline: none;
+}
+
+header input {
+    height: 25px;
+    min-width: 200px;
+    margin-right: 10px;
+    border-radius: 5px;
+    outline: none;
 }
 
 main h2 {

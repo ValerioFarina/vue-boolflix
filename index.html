@@ -12,8 +12,16 @@
 
         <div id="root" v-cloak>
             <header>
-                <input v-model="searched.input" placeholder="cerca un film o una serie tv" @keyup.enter="getSearchResult">
-                <button @click="getSearchResult">Cerca</button>
+                <div class="logo">
+                    <span class="text">
+                        BOOLFLIX
+                    </span>
+                </div>
+
+                <div class="search">
+                    <input v-model="searched.input" placeholder="cerca un film o una serie tv" @keyup.enter="getSearchResult">
+                    <button @click="getSearchResult">Cerca</button>
+                </div>
             </header>
 
             <main>
@@ -36,12 +44,7 @@
                                     {{ isMovie(result) ? result.title : result.name }}
                                 </li>
                                 <li class="original-title">
-                                    <span v-if="isMovie(result)">
-                                        {{ result.original_title }}
-                                    </span>
-                                    <span v-else>
-                                        {{ result.original_name }}
-                                    </span>
+                                    {{ isMovie(result) ? result.original_title : result.original_name }}
                                 </li>
                                 <li class="language">
                                     <img :src="getFlag(result.original_language)" v-if="flagsAvailable.includes(result.original_language)">
