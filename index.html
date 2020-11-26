@@ -64,6 +64,12 @@
                                     <strong>Overview: </strong>
                                     {{ result.overview }}
                                 </li>
+                                <li class="cast" v-if="result.cast.length">
+                                    <strong>Cast :</strong>
+                                    <span v-for="person in result.cast">
+                                        {{ person.name }}
+                                    </span>
+                                </li>
                             </ul>
                         </div>
                     </div>

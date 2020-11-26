@@ -136,6 +136,10 @@ main h2 {
     align-items: center;
 }
 
+.card .cast span:not(:last-child):after {
+    content: ", "
+}
+
 /* cards scrollbar */
 .card::-webkit-scrollbar {
     width: 7px;

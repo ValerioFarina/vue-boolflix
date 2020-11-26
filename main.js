@@ -1,6 +1,8 @@
 const urlSearch = 'https://api.themoviedb.org/3/search/';
 const urlConfig = 'https://api.themoviedb.org/3/configuration';
 const apiKey = '8762c3f242ebc4064f2c46af1dbdebc0';
+const urlMovie = 'https://api.themoviedb.org/3/movie/';
+const urlTv = 'https://api.themoviedb.org/3/tv/'
 
 var app = new Vue({
     el : '#root',
@@ -15,13 +17,19 @@ var app = new Vue({
                 result : [],
                 loaded : false,
                 isLoading : false,
-                url : urlSearch + 'movie'
+                urls : {
+                    search : urlSearch + 'movie',
+                    info : urlMovie
+                }
             },
             tvSeries : {
                 result : [],
                 loaded : false,
                 isLoading: false,
-                url : urlSearch + 'tv'
+                urls : {
+                    search : urlSearch + 'tv',
+                    info : urlTv
+                }
             },
             numberOfResults : 0
         },
@@ -52,7 +60,7 @@ var app = new Vue({
             this.search.numberOfResults = 0;
             axios
                 // we get the movies/tv-series that match the search made by the user
-                .get(object.url, {
+                .get(object.urls.search, {
                     params: {
                         api_key: apiKey,
                         query: this.searched.title
@@ -63,10 +71,37 @@ var app = new Vue({
                     object.result = responseObject.data.results;
                     // we add to numberOfResults the number of movies/tv series we have obtained
                     this.search.numberOfResults += object.result.length;
-                    // we reset the value of isLoading
-                    object.isLoading = false;
-                    // we set the value of loaded equal to true
-                    object.loaded = true;
+                    let creditsRequests = [];
+                    object.result.forEach((item) => {
+                        // for each movie/tv series we added to the corresponding array, we make a request (i.e. we get a promise)
+                        const creditsRequest = axios.get(
+                            object.urls.info + item.id + '/credits',
+                            {
+                                params : {
+                                    api_key: apiKey
+                                }
+                            }
+                        );
+                        // we push the request in the array creditsRequest
+                        creditsRequests.push(creditsRequest);
+                    });
+                    axios.all(creditsRequests).then(
+                        axios.spread((...responses) => {
+                            // once every request (i.e. every promise) has been fulfilled,
+                            // we go through the corresponding array of responses
+                            responses.forEach((response, index) => {
+                                // each response contains an array named "cast"
+                                // more precisely, given an index i, the response in position i within the array of responses
+                                // contains informations about the cast of the movie/tv-series in position i within the array object.result
+                                // we save in object.result[i] the informations about the first 5 members of the corresponding cast
+                                object.result[index].cast = response.data.cast.slice(0, 5);
+                            });
+                            // we reset the value of isLoading
+                            object.isLoading = false;
+                            // we set the value of loaded equal to true
+                            object.loaded = true;
+                        })
+                    );
                 });
         },
         // this function populates the array search.movies.result with objects representing movies
