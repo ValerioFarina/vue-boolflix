@@ -9,7 +9,7 @@
 }
 
 .container {
-    max-width: 1250px;
+    max-width: 1200px;
     margin: auto;
 }
 
@@ -38,12 +38,18 @@ header button {
     height: 35px;
     width: 70px;
     border-radius: 5px;
+    background-color: #919191;
+    color: white;
     cursor: pointer;
     outline: none;
 }
 
+header button:hover {
+    background-color: rgb(167, 167, 167);
+}
+
 header input {
-    height: 25px;
+    height: 30px;
     min-width: 200px;
     margin-right: 10px;
     border-radius: 5px;
@@ -68,12 +74,12 @@ main h2 {
 }
 
 .card {
-    width: 158px;
-    height: 237px;
+    width: 250px;
+    height: 375px;
     margin: 0 25px 25px 25px;
     border: 2px solid #b8b8b8;
     list-style-type: none;
-    font-size: 13px;
+    font-size: 15px;
     background-color: black;
     word-wrap: break-word;
     cursor: pointer;
@@ -82,11 +88,11 @@ main h2 {
 
 .card li:not(.poster) {
     display: none;
-    padding: 0 5px 5px 5px;
+    padding: 0 10px 8px 10px;
 }
 
 .card strong {
-    font-size: 14px;
+    font-size: 17px;
 }
 
 .card .poster {
