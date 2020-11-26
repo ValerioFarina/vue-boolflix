@@ -44,7 +44,7 @@
                                     <strong>Titolo: </strong>
                                     {{ isMovie(result) ? result.title : result.name }}
                                 </li>
-                                <li class="original-title">
+                                <li class="original-title" v-if="result.original_title != result.title">
                                     <strong>Titolo originale: </strong>
                                     {{ isMovie(result) ? result.original_title : result.original_name }}
                                 </li>
