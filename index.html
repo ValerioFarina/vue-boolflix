@@ -66,9 +66,11 @@
                                 </li>
                                 <li class="cast" v-if="result.cast.length">
                                     <strong>Cast :</strong>
-                                    <span v-for="person in result.cast">
-                                        {{ person.name }}
-                                    </span>
+                                    {{ result.cast.join(', ') }}
+                                </li>
+                                <li class="genres" v-if="result.genre_ids.length">
+                                    <strong>Genere: </strong>
+                                    {{ isMovie(result) ? getGenres(result.genre_ids, 'movies') : getGenres(result.genre_ids, 'tvSeries') }}
                                 </li>
                             </ul>
                         </div>

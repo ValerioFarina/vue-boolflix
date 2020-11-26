@@ -1,8 +1,12 @@
-const urlSearch = 'https://api.themoviedb.org/3/search/';
-const urlConfig = 'https://api.themoviedb.org/3/configuration';
+const urlMovieDb3 = 'https://api.themoviedb.org/3/';
+const urlSearch = urlMovieDb3 + 'search/';
+const urlConfig = urlMovieDb3 + 'configuration';
+const urlMovie = urlMovieDb3 + 'movie/';
+const urlTv = urlMovieDb3 + 'tv/';
+const urlMovieGenres = urlMovieDb3 + 'genre/movie/list';
+const urlTvGenres = urlMovieDb3 + 'genre/tv/list';
 const apiKey = '8762c3f242ebc4064f2c46af1dbdebc0';
-const urlMovie = 'https://api.themoviedb.org/3/movie/';
-const urlTv = 'https://api.themoviedb.org/3/tv/'
+
 
 var app = new Vue({
     el : '#root',
@@ -44,7 +48,11 @@ var app = new Vue({
             'es',
             'fr',
             'ja'
-        ]
+        ],
+        genres : {
+            movies : [],
+            tvSeries : []
+        }
     },
 
     methods : {
@@ -93,8 +101,8 @@ var app = new Vue({
                                 // each response contains an array named "cast"
                                 // more precisely, given an index i, the response in position i within the array of responses
                                 // contains informations about the cast of the movie/tv-series in position i within the array object.result
-                                // we save in object.result[i] the informations about the first 5 members of the corresponding cast
-                                object.result[index].cast = response.data.cast.slice(0, 5);
+                                // we save in object.result[i] only the names about the first 5 members of the corresponding cast
+                                object.result[index].cast = response.data.cast.slice(0, 5).map(person => person.name);
                             });
                             // we reset the value of isLoading
                             object.isLoading = false;
@@ -149,18 +157,57 @@ var app = new Vue({
         // and returns a complete img-url that unables us to display the flag corresponding to the language
         getFlag(flagPath) {
             return 'img/flags/' + flagPath + '.png';
+        },
+        // this function has two parameters:
+        // genreIds, which should be an array of numbers (where each number corresponds to the id of a genre)
+        // and type, which should be a string (either the string "movies" or the string "tvSeries")
+        // the function returns the list of the genre names corresponding to the genre ids
+        getGenres(genreIds, type) {
+            let genres = [];
+            genreIds.forEach((genreId) => {
+                let genreFound = false;
+                let counter = 0;
+                while (!genreFound && counter<this.genres[type].length) {
+                    if (genreId == this.genres[type][counter].id) {
+                        genres.push(this.genres[type][counter].name);
+                        genreFound = true;
+                    }
+                    counter++;
+                }
+            });
+            return genres.join(', ');
         }
     },
 
     mounted() {
         axios
-        .get(urlConfig, {
-            params: {
-                api_key: apiKey
-            }
-        })
-        .then((responseObject) => {
-            this.imgUrl.baseUrl = responseObject.data.images.base_url;
-        });
+            .get(urlConfig, {
+                params: {
+                    api_key: apiKey
+                }
+            })
+            .then((responseObject) => {
+                this.imgUrl.baseUrl = responseObject.data.images.base_url;
+            });
+
+        axios
+            .get(urlMovieGenres, {
+                params : {
+                    api_key: apiKey
+                }
+            })
+            .then((responseObject) => {
+                this.genres.movies = responseObject.data.genres;
+            });
+
+        axios
+            .get(urlTvGenres, {
+                params : {
+                    api_key: apiKey
+                }
+            })
+            .then((responseObject) => {
+                this.genres.tvSeries = responseObject.data.genres;
+            });
     }
 });
