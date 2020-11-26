@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 .container {
     max-width: 1250px;
     margin: auto;
@@ -13,7 +17,7 @@ header {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    height: 95px;
+    min-height: 95px;
     padding: 30px;
     background-color: black;
 }
@@ -21,8 +25,8 @@ header {
 header .logo {
     display: flex;
     align-items: center;
-    color: red;
     font-size: 30px;
+    color: red;
 }
 
 header .search {
@@ -47,14 +51,15 @@ header input {
 }
 
 main {
-    background-color: #454545;
     min-height: calc(100vh - 95px);
     padding-top: 40px;
+    background-color: #454545;
     color: white;
 }
 
 main h2 {
     margin-bottom: 40px;
+    margin-left: 25px;
 }
 
 .container-cards {
@@ -65,13 +70,14 @@ main h2 {
 .card {
     width: 158px;
     height: 237px;
-    list-style-type: none;
     margin: 0 25px 25px 25px;
     border: 2px solid #b8b8b8;
-    background-color: black;
+    list-style-type: none;
     font-size: 13px;
+    background-color: black;
     word-wrap: break-word;
     cursor: pointer;
+    overflow-y: auto;
 }
 
 .card li:not(.poster) {
@@ -124,6 +130,22 @@ main h2 {
     align-items: center;
 }
 
-[v-cloak] {
-  display: none;
+/* cards scrollbar */
+.card::-webkit-scrollbar {
+    width: 7px;
+    height: 10px;
+}
+
+.card::-webkit-scrollbar-thumb {
+    background: linear-gradient(13deg, #6f6f6f 14%,#6f6f6f 64%);
+    border-radius: 5px;
+}
+
+.card::-webkit-scrollbar-thumb:hover{
+    background: linear-gradient(13deg, rgb(186, 186, 186) 14%,rgb(186, 186, 186) 64%);
+}
+
+.card::-webkit-scrollbar-track{
+    background: black;
+    border-radius: 10px;
 }

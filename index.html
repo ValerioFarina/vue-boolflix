@@ -60,6 +60,10 @@
                                     <i class="fas fa-star" v-for="n in solidStars(result.vote_average)"></i>
                                     <i class="far fa-star" v-for="n in regularStars(result.vote_average)"></i>
                                 </li>
+                                <li class="overview" v-if="result.overview">
+                                    <strong>Overview: </strong>
+                                    {{ result.overview }}
+                                </li>
                             </ul>
                         </div>
                     </div>
