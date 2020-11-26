@@ -29,7 +29,7 @@ var app = new Vue({
             baseUrl : '',
             posterSize : 'w342'
         },
-        languages : [
+        flagsAvailable : [
             'en',
             'it',
             'de',
@@ -40,19 +40,19 @@ var app = new Vue({
     },
 
     methods : {
-        // this function takes as input either the string "movies" or the string "tvSeries"
+        // this function takes as input either the object search.movies or the object search.tvSeries
         // in the first case, it populates the array search.movies.result with objects representing movies
         // in the second case, it populates the array search.tvSeries.result with objects representing tv series
-        startSearch(objects) {
+        startSearch(object) {
             // we reset the value of loaded
-            this.search[objects].loaded = false;
+            object.loaded = false;
             // we set the value of isLoading equal to true
-            this.search[objects].isLoading = true;
+            object.isLoading = true;
             // we reset the value of numberOfResults
             this.search.numberOfResults = 0;
             axios
                 // we get the movies/tv-series that match the search made by the user
-                .get(this.search[objects].url, {
+                .get(object.url, {
                     params: {
                         api_key: apiKey,
                         query: this.searched.title
@@ -60,13 +60,13 @@ var app = new Vue({
                 })
                 .then((responseObject) => {
                     // we add the movies/tv-series to the corresponding array
-                    this.search[objects].result = responseObject.data.results;
+                    object.result = responseObject.data.results;
                     // we add to numberOfResults the number of movies/tv series we have obtained
-                    this.search.numberOfResults += this.search[objects].result.length;
+                    this.search.numberOfResults += object.result.length;
                     // we reset the value of isLoading
-                    this.search[objects].isLoading = false;
+                    object.isLoading = false;
                     // we set the value of loaded equal to true
-                    this.search[objects].loaded = true;
+                    object.loaded = true;
                 });
         },
         // this function populates the array search.movies.result with objects representing movies
@@ -80,18 +80,22 @@ var app = new Vue({
                 // we reset the value of searched.input
                 this.searched.input = '';
                 // we populate the array search.movies.result with objects representing movies according to the search made by the user
-                this.startSearch('movies');
+                this.startSearch(this.search.movies);
                 // we populate the array search.tvSeries.result with objects representing tv series according to the search made by the user
-                this.startSearch('tvSeries');
+                this.startSearch(this.search.tvSeries);
             }
         },
         // this function checks if an object represents a movie or a tv series
         isMovie(object) {
             return this.search.movies.result.includes(object);
         },
-        // this function converts a rate based on a 0-to-10 scale into a rate based on a 0-to-5 scale
-        toStars(vote) {
+        // this function takes as input a rate based on a 0-to-10 scale and returns the corresponding number of full stars (based on a 0-to-5 scale)
+        solidStars(vote) {
             return Math.round(vote / 2);
+        },
+        // this function takes as input a rate based on a 0-to-10 scale and returns the corresponding number of empty stars (based on a 0-to-5 scale)
+        regularStars(vote) {
+            return 5 - this.solidStars(vote);
         },
         // this function checks if both the search of the movies and the search of the tv series is completed
         isSearchCompleted() {
@@ -103,8 +107,13 @@ var app = new Vue({
         },
         // this function takes as input the poster_path of a movie/tv-series object
         // and returns a complete img-url that unables us to display the poster of this movie/tv-series
-        getImgUrl(posterPath) {
+        getPoster(posterPath) {
             return this.imgUrl.baseUrl + this.imgUrl.posterSize + posterPath;
+        },
+        // this function takes as input the original_language of a movie/tv-series object
+        // and returns a complete img-url that unables us to display the flag corresponding to the language
+        getFlag(flagPath) {
+            return 'img/flags/' + flagPath + '.png';
         }
     },
 

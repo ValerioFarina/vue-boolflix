@@ -29,18 +29,13 @@
                         <div class="container-cards">
                             <ul class="card" v-for="result in [...search.movies.result, ...search.tvSeries.result]">
                                 <li class="poster">
-                                    <img :src="getImgUrl(result.poster_path)" alt="poster non disponibile" v-if="result.poster_path">
+                                    <img :src="getPoster(result.poster_path)" alt="poster non disponibile" v-if="result.poster_path">
                                     <img src="img/poster_not_available.png" v-else>
                                 </li>
-                                <li>
-                                    <span v-if="isMovie(result)">
-                                        {{ result.title }}
-                                    </span>
-                                    <span v-else>
-                                        {{ result.name }}
-                                    </span>
+                                <li class="title">
+                                    {{ isMovie(result) ? result.title : result.name }}
                                 </li>
-                                <li>
+                                <li class="original-title">
                                     <span v-if="isMovie(result)">
                                         {{ result.original_title }}
                                     </span>
@@ -49,14 +44,14 @@
                                     </span>
                                 </li>
                                 <li class="language">
-                                    <img :src="'img/flags/' + result.original_language + '.png'" v-if="languages.includes(result.original_language)">
+                                    <img :src="getFlag(result.original_language)" v-if="flagsAvailable.includes(result.original_language)">
                                     <span v-else>
                                         {{ result.original_language }}
                                     </span>
                                 </li>
-                                <li>
-                                    <i class="fas fa-star" v-for="n in toStars(result.vote_average)"></i>
-                                    <i class="far fa-star" v-for="n in (5 - toStars(result.vote_average))"></i>
+                                <li class="vote">
+                                    <i class="fas fa-star" v-for="n in solidStars(result.vote_average)"></i>
+                                    <i class="far fa-star" v-for="n in regularStars(result.vote_average)"></i>
                                 </li>
                             </ul>
                         </div>
