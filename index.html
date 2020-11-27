@@ -86,7 +86,7 @@
                                             </li>
                                             <li class="genres" v-if="result.genre_ids.length">
                                                 <strong>Genere: </strong>
-                                                {{ getGenres(result.genre_ids).join(', ') }}
+                                                {{ getGenreNames(result.genre_ids).join(', ') }}
                                             </li>
                                         </ul>
                                     </div>

@@ -164,17 +164,18 @@ var app = new Vue({
         getFlag(flagPath) {
             return 'img/flags/' + flagPath + '.png';
         },
-        // this function has two parameters:
-        // genreIds, which should be an array of numbers (where each number corresponds to the id of a genre)
-        // and type, which should be a string (either the string "movies" or the string "tvSeries")
-        // the function returns the list of the genre names corresponding to the genre ids
-        getGenres(genreIds) {
+        // this function takes as input an array of numbers corresponding to genre ids
+        // the function returns the list of the genre names corresponding to these genre ids
+        getGenreNames(genreIds) {
+            // we create the variable which will contain the list of the genre names
             let genres = [];
             genreIds.forEach((genreId) => {
                 let genreFound = false;
                 let i = 0;
                 while (!genreFound && i<this.genres.all.length) {
                     if (genreId == this.genres.all[i].id) {
+                        // for each genre id, we check if it corresponds to an element of genres.all (which is the array containing all the genres)
+                        // if it corresponds, we push the corresponding name in the array genres
                         genres.push(this.genres.all[i].name);
                         genreFound = true;
                     }
@@ -183,23 +184,28 @@ var app = new Vue({
             });
             return genres;
         },
-        areEqual(obj1, obj2) {
-            return JSON.stringify(obj1) === JSON.stringify(obj2);
-        },
-        includesObject(array, obj) {
-            let objFound = false;
-            let i = 0;
-            while (!objFound && i<array.length) {
-                if (this.areEqual(obj, array[i])) {
-                    objFound = true;
-                }
-                i++;
-            }
-            return objFound;
-        },
+        // this function checks if every genre selected by the user in the filter-menu
+        // is included in the list of genres associated with a specific movie/tv-series
         matchTheFilter(genreIds) {
-            let genres = this.getGenres(genreIds);
+            let genres = this.getGenreNames(genreIds);
             return this.genres.checked.every((checkedGenre) => genres.includes(checkedGenre));
+        },
+        // through the following function we can get all the available genres of the movies/tv-series
+        // these genres are saved without duplicates in the array genres.all
+        getAllGenres(url) {
+            axios
+                .get(url, {
+                    params : {
+                        api_key: apiKey
+                    }
+                })
+                .then((responseObject) => {
+                    responseObject.data.genres.forEach((genre) => {
+                        if (!includesObject(this.genres.all, genre)) {
+                            this.genres.all.push(genre);
+                        }
+                    });
+                });
         }
     },
 
@@ -214,34 +220,28 @@ var app = new Vue({
                 this.posterUrl.baseUrl = responseObject.data.images.base_url;
             });
 
-        axios
-            .get(urlMovieGenres, {
-                params : {
-                    api_key: apiKey
-                }
-            })
-            .then((responseObject) => {
-                responseObject.data.genres.forEach((genre) => {
-                    if (!this.includesObject(this.genres.all, genre)) {
-                        this.genres.all.push(genre);
-                    }
-                });
-                this.genres.all.sort();
-            });
+        this.getAllGenres(urlMovieGenres);
 
-        axios
-            .get(urlTvGenres, {
-                params : {
-                    api_key: apiKey
-                }
-            })
-            .then((responseObject) => {
-                responseObject.data.genres.forEach((genre) => {
-                    if (!this.includesObject(this.genres.all, genre)) {
-                        this.genres.all.push(genre);
-                    }
-                });
-                this.genres.all.sort();
-            });
+        this.getAllGenres(urlTvGenres);
     }
 });
+
+
+// this function checks if two objects are equal, that is, if they have the same key-value pairs
+// (but the key-value pairs must also occur in the same order, otherwise the function returns false)
+function areEqual(obj1, obj2) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
+// this function checks if an array of objects includes a given object
+// (i.e. if a given object is equal to one of the objects occurring in the array)
+function includesObject(array, obj) {
+    let objFound = false;
+    let i = 0;
+    while (!objFound && i<array.length) {
+        if (areEqual(obj, array[i])) {
+            objFound = true;
+        }
+        i++;
+    }
+    return objFound;
+}
