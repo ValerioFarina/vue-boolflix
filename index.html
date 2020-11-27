@@ -35,44 +35,52 @@
                         </h2>
 
                         <div class="container-cards">
-                            <ul class="card" v-for="result in [...search.movies.result, ...search.tvSeries.result]">
-                                <li class="poster">
-                                    <img :src="getPoster(result.poster_path)" alt="poster non disponibile" v-if="result.poster_path">
-                                    <img src="img/poster_not_available.png" v-else>
-                                </li>
-                                <li class="title">
-                                    <strong>Titolo: </strong>
-                                    {{ isMovie(result) ? result.title : result.name }}
-                                </li>
-                                <li class="original-title" v-if="result.original_title != result.title">
-                                    <strong>Titolo originale: </strong>
-                                    {{ isMovie(result) ? result.original_title : result.original_name }}
-                                </li>
-                                <li class="language">
-                                    <strong>Lingua originale: </strong>
-                                    <img :src="getFlag(result.original_language)" v-if="flagsAvailable.includes(result.original_language)">
-                                    <span v-else>
-                                        {{ result.original_language }}
-                                    </span>
-                                </li>
-                                <li class="vote">
-                                    <strong>Voto: </strong>
-                                    <i class="fas fa-star" v-for="n in solidStars(result.vote_average)"></i>
-                                    <i class="far fa-star" v-for="n in regularStars(result.vote_average)"></i>
-                                </li>
-                                <li class="overview" v-if="result.overview">
-                                    <strong>Overview: </strong>
-                                    {{ result.overview }}
-                                </li>
-                                <li class="cast" v-if="result.cast.length">
-                                    <strong>Cast :</strong>
-                                    {{ result.cast.join(', ') }}
-                                </li>
-                                <li class="genres" v-if="result.genre_ids.length">
-                                    <strong>Genere: </strong>
-                                    {{ isMovie(result) ? getGenres(result.genre_ids, 'movies') : getGenres(result.genre_ids, 'tvSeries') }}
-                                </li>
-                            </ul>
+                            <div class="card" v-for="result in [...search.movies.result, ...search.tvSeries.result]">
+                                <div class="card-inner">
+                                    <div class="card-front">
+                                        <div class="poster">
+                                            <img :src="getPoster(result.poster_path)" alt="poster non disponibile" v-if="result.poster_path">
+                                            <img src="img/poster_not_available.png" v-else>
+                                        </div>
+                                    </div>
+                                    <div class="card-back">
+                                        <ul class="info">
+                                            <li class="title">
+                                                <strong>Titolo: </strong>
+                                                {{ isMovie(result) ? result.title : result.name }}
+                                            </li>
+                                            <li class="original-title" v-if="result.original_title != result.title">
+                                                <strong>Titolo originale: </strong>
+                                                {{ isMovie(result) ? result.original_title : result.original_name }}
+                                            </li>
+                                            <li class="language">
+                                                <strong>Lingua originale: </strong>
+                                                <img :src="getFlag(result.original_language)" v-if="flagsAvailable.includes(result.original_language)">
+                                                <span v-else>
+                                                    {{ result.original_language }}
+                                                </span>
+                                            </li>
+                                            <li class="vote">
+                                                <strong>Voto: </strong>
+                                                <i class="fas fa-star" v-for="n in solidStars(result.vote_average)"></i>
+                                                <i class="far fa-star" v-for="n in regularStars(result.vote_average)"></i>
+                                            </li>
+                                            <li class="overview" v-if="result.overview">
+                                                <strong>Overview: </strong>
+                                                {{ result.overview }}
+                                            </li>
+                                            <li class="cast" v-if="result.cast.length">
+                                                <strong>Cast :</strong>
+                                                {{ result.cast.join(', ') }}
+                                            </li>
+                                            <li class="genres" v-if="result.genre_ids.length">
+                                                <strong>Genere: </strong>
+                                                {{ isMovie(result) ? getGenres(result.genre_ids, 'movies') : getGenres(result.genre_ids, 'tvSeries') }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="loading" v-else-if="isSearching()">
