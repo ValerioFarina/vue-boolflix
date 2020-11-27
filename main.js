@@ -51,9 +51,10 @@ var app = new Vue({
             'ja'
         ],
         genres : {
-            movies : [],
-            tvSeries : []
-        }
+            all : [],
+            checked : []
+        },
+        showFilterMenu : false
     },
 
     methods : {
@@ -167,20 +168,38 @@ var app = new Vue({
         // genreIds, which should be an array of numbers (where each number corresponds to the id of a genre)
         // and type, which should be a string (either the string "movies" or the string "tvSeries")
         // the function returns the list of the genre names corresponding to the genre ids
-        getGenres(genreIds, type) {
+        getGenres(genreIds) {
             let genres = [];
             genreIds.forEach((genreId) => {
                 let genreFound = false;
-                let counter = 0;
-                while (!genreFound && counter<this.genres[type].length) {
-                    if (genreId == this.genres[type][counter].id) {
-                        genres.push(this.genres[type][counter].name);
+                let i = 0;
+                while (!genreFound && i<this.genres.all.length) {
+                    if (genreId == this.genres.all[i].id) {
+                        genres.push(this.genres.all[i].name);
                         genreFound = true;
                     }
-                    counter++;
+                    i++;
                 }
             });
-            return genres.join(', ');
+            return genres;
+        },
+        areEqual(obj1, obj2) {
+            return JSON.stringify(obj1) === JSON.stringify(obj2);
+        },
+        includesObject(array, obj) {
+            let objFound = false;
+            let i = 0;
+            while (!objFound && i<array.length) {
+                if (this.areEqual(obj, array[i])) {
+                    objFound = true;
+                }
+                i++;
+            }
+            return objFound;
+        },
+        matchTheFilter(genreIds) {
+            let genres = this.getGenres(genreIds);
+            return this.genres.checked.every((checkedGenre) => genres.includes(checkedGenre));
         }
     },
 
@@ -202,7 +221,12 @@ var app = new Vue({
                 }
             })
             .then((responseObject) => {
-                this.genres.movies = responseObject.data.genres;
+                responseObject.data.genres.forEach((genre) => {
+                    if (!this.includesObject(this.genres.all, genre)) {
+                        this.genres.all.push(genre);
+                    }
+                });
+                this.genres.all.sort();
             });
 
         axios
@@ -212,7 +236,12 @@ var app = new Vue({
                 }
             })
             .then((responseObject) => {
-                this.genres.tvSeries = responseObject.data.genres;
+                responseObject.data.genres.forEach((genre) => {
+                    if (!this.includesObject(this.genres.all, genre)) {
+                        this.genres.all.push(genre);
+                    }
+                });
+                this.genres.all.sort();
             });
     }
 });

@@ -25,17 +25,29 @@
             </header>
 
             <main>
+                <h3 @click="showFilterMenu = true" v-if="!showFilterMenu">
+                    Filtra risultati in base al genere
+                </h3>
                 <div class="container">
+                    <div class="filter-menu" v-if="showFilterMenu">
+                        <i class="fas fa-times" @click="showFilterMenu = false"></i>
+                        <ul class="genres">
+                            <li v-for="genre in genres.all">
+                                <input type="checkbox" :id="genre.name" :value="genre.name" v-model="genres.checked">
+                                <label :for="genre.name">{{ genre.name }}</label>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="search-result" v-if="isSearchCompleted()">
-                        <h2 v-if="search.numberOfResults == 0">
+                        <h1 v-if="search.numberOfResults == 0">
                             Nessun risultato trovato per "{{ searched.title }}"
-                        </h2>
-                        <h2 v-else>
+                        </h1>
+                        <h1 v-else>
                             Risultati trovati per "{{ searched.title }}"
-                        </h2>
+                        </h1>
 
                         <div class="container-cards">
-                            <div class="card" v-for="result in [...search.movies.result, ...search.tvSeries.result]">
+                            <div class="card" v-for="result in [...search.movies.result, ...search.tvSeries.result]" v-if="matchTheFilter(result.genre_ids)">
                                 <div class="card-inner">
                                     <div class="card-front">
                                         <div class="poster">
@@ -74,7 +86,7 @@
                                             </li>
                                             <li class="genres" v-if="result.genre_ids.length">
                                                 <strong>Genere: </strong>
-                                                {{ isMovie(result) ? getGenres(result.genre_ids, 'movies') : getGenres(result.genre_ids, 'tvSeries') }}
+                                                {{ getGenres(result.genre_ids).join(', ') }}
                                             </li>
                                         </ul>
                                     </div>
@@ -83,7 +95,7 @@
                         </div>
                     </div>
                     <div class="loading" v-else-if="isSearching()">
-                        <h2>Ricerca in corso ...</h2>
+                        <h1>Ricerca in corso ...</h1>
                     </div>
                 </div>
             </main>

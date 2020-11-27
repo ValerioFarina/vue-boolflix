@@ -36,7 +36,7 @@ header .search {
 
 header button {
     height: 35px;
-    width: 70px;
+    padding: 0 10px;
     border-radius: 5px;
     background-color: red;
     color: white;
@@ -64,9 +64,49 @@ main {
     color: white;
 }
 
-main h2 {
-    margin-bottom: 40px;
-    margin-left: 25px;
+main h3 {
+    float: right;
+    margin-right: 100px;
+}
+
+main h3:hover {
+    color: red;
+    cursor: pointer;
+}
+
+main .filter-menu {
+    position: relative;
+}
+
+main .filter-menu i {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    font-size: 25px;
+}
+
+main .filter-menu i:hover {
+    color: red;
+    cursor: pointer;
+}
+
+main .filter-menu .genres {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 35px;
+    list-style-type: none;
+    background-color: grey;
+    border-radius: 10px;
+}
+
+main .filter-menu .genres li {
+    padding: 10px 20px;
+}
+
+main h1 {
+    margin: 40px 0;
 }
 
 .container-cards {
