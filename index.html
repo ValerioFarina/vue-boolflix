@@ -39,8 +39,7 @@
                                 <div class="card-inner">
                                     <div class="card-front">
                                         <div class="poster">
-                                            <img :src="getPoster(result.poster_path)" alt="poster non disponibile" v-if="result.poster_path">
-                                            <img src="img/poster_not_available.png" v-else>
+                                            <img :src="getPoster(result.poster_path)" alt="poster non disponibile">
                                         </div>
                                     </div>
                                     <div class="card-back">
@@ -70,7 +69,7 @@
                                                 {{ result.overview }}
                                             </li>
                                             <li class="cast" v-if="result.cast.length">
-                                                <strong>Cast :</strong>
+                                                <strong>Cast: </strong>
                                                 {{ result.cast.join(', ') }}
                                             </li>
                                             <li class="genres" v-if="result.genre_ids.length">

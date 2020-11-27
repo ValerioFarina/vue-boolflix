@@ -37,9 +37,10 @@ var app = new Vue({
             },
             numberOfResults : 0
         },
-        imgUrl : {
+        posterUrl : {
             baseUrl : '',
-            posterSize : 'w342'
+            posterSize : 'w342',
+            defaultUrl : 'img/poster_not_available.png'
         },
         flagsAvailable : [
             'en',
@@ -151,7 +152,11 @@ var app = new Vue({
         // this function takes as input the poster_path of a movie/tv-series object
         // and returns a complete img-url that unables us to display the poster of this movie/tv-series
         getPoster(posterPath) {
-            return this.imgUrl.baseUrl + this.imgUrl.posterSize + posterPath;
+            if (posterPath) {
+                return this.posterUrl.baseUrl + this.posterUrl.posterSize + posterPath;
+            } else {
+                return this.posterUrl.defaultUrl;
+            }
         },
         // this function takes as input the original_language of a movie/tv-series object
         // and returns a complete img-url that unables us to display the flag corresponding to the language
@@ -187,7 +192,7 @@ var app = new Vue({
                 }
             })
             .then((responseObject) => {
-                this.imgUrl.baseUrl = responseObject.data.images.base_url;
+                this.posterUrl.baseUrl = responseObject.data.images.base_url;
             });
 
         axios
