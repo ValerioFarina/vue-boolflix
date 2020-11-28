@@ -153,11 +153,11 @@ var app = new Vue({
         // this function takes as input the poster_path of a movie/tv-series object
         // and returns a complete img-url that unables us to display the poster of this movie/tv-series
         getPoster(posterPath) {
+            let poster = this.posterUrl.defaultUrl;
             if (posterPath) {
-                return this.posterUrl.baseUrl + this.posterUrl.posterSize + posterPath;
-            } else {
-                return this.posterUrl.defaultUrl;
+                poster = this.posterUrl.baseUrl + this.posterUrl.posterSize + posterPath;
             }
+            return poster;
         },
         // this function takes as input the original_language of a movie/tv-series object
         // and returns a complete img-url that unables us to display the flag corresponding to the language
